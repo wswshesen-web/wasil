@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الأخبار - وصل</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<style>
+:root {
+  --brand1:#00686D;
+  --brand2:#68C3A3;
+  --bg:#f7f9fb;
+}
+body {
+  margin:0;
+  font-family:'Tajawal',sans-serif;
+  background:var(--bg);
+  display:flex;
+  flex-direction:column;
+  min-height:100vh;
+}
+main {
+  flex:1;
+  padding:40px;
+  max-width:900px;
+  margin:auto;
+  text-align:center;
+}
+.news-card {
+  background:#fff;
+  padding:20px;
+  margin-bottom:20px;
+  border-radius:10px;
+  box-shadow:0 2px 6px rgba(0,0,0,0.1);
+  text-align:right;
+  transition:transform .3s;
+}
+.news-card:hover {
+  transform:scale(1.02);
+}
+.news-card h3 {
+  color:var(--brand1);
+  margin-top:0;
+}
+.news-card p {
+  color:#333;
+  line-height:1.6;
+}
+</style>
+</head>
+<body>
+
+<!-- الهيدر -->
+<div id="header"></div>
+
+<main>
+  <h1 style="color:var(--brand1);text-align:center;margin-bottom:30px;">📰 آخر الأخبار</h1>
+
+  <div class="news-card">
+    <h3>إطلاق منصة وصل</h3>
+    <p>تم إطلاق المنصة الرقمية “وصل” لدعم وتمكين الأشخاص ذوي الإعاقة في المملكة العربية السعودية.</p>
+  </div>
+
+  <div class="news-card">
+    <h3>اتفاقية تعاون جديدة</h3>
+    <p>تم توقيع اتفاقية بين جمعية لأجلهم ومنصة وصل لتوفير فرص تدريبية للشباب.</p>
+  </div>
+
+  <div class="news-card">
+    <h3>مبادرة تمكين جديدة</h3>
+    <p>أطلقت المنصة مبادرة لتمكين الأشخاص ذوي الإعاقة من الحصول على وظائف في القطاع الخاص بالتعاون مع عدد من الشركات.</p>
+  </div>
+</main>
+
+<!-- الفوتر -->
+<div id="footer"></div>
+
+<script>
+// تحميل الهيدر والفوتر
+async function loadPart(id, file){
+  try{
+    const res = await fetch(file);
+    if(!res.ok) throw new Error();
+    document.getElementById(id).innerHTML = await res.text();
+    fixLinks(id);
+  }catch(e){
+    console.error("خطأ في تحميل", file, e);
+  }
+}
+
+// هنا نستخدم ../ لأن ملف header.html موجود في مجلد أعلى واحد فقط من media/
+loadPart('header','../header.html');
+loadPart('footer','../footer.html');
+
+// تصحيح الروابط في الهيدر والفوتر
+function fixLinks(id){
+  const section=document.getElementById(id);
+  if(!section) return;
+  section.querySelectorAll('a[href]').forEach(a=>{
+    const href=a.getAttribute('href');
+    if(!href.startsWith('http') && !href.startsWith('../') && !href.startsWith('#') && !href.startsWith('/')){
+      a.setAttribute('href','../'+href);
+    }
+  });
+}
+</script>
+
+</body>
+</html>
